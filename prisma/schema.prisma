@@ -215,3 +215,20 @@ model AnonymousProfile {
   avatarURI        String?
   discordId        String?
 }
+
+model PlayerChatManager {
+  id             Int          @id @default(autoincrement())
+  categoryId     String       @unique
+  name           String?
+  hostDiscordIds String[]
+  playerChats    PlayerChat[]
+}
+
+model PlayerChat {
+  id               Int      @id @default(autoincrement())
+  channelId        String   @unique
+  playerDiscordIds String[]
+
+  manager   PlayerChatManager @relation(fields: [managerId], references: [id])
+  managerId Int
+}
