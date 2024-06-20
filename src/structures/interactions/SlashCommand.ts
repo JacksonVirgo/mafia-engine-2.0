@@ -33,6 +33,7 @@ export class SlashCommand extends Interaction {
 	private executeFunction: SlashCommandExecute = defaultSlashCommandExecute;
 	private executeAutoComplete: SlashCommandAutocomplete | undefined;
 	private requiresCitizenship: boolean = false;
+	private restriction: CommandServerRestriction = CommandServerRestriction.None;
 
 	constructor(name: string) {
 		super(name);
@@ -43,6 +44,11 @@ export class SlashCommand extends Interaction {
 
 	public setDescription(description: string) {
 		this.builder.setDescription(description);
+		return this;
+	}
+
+	public setRestriction(restriction: CommandServerRestriction) {
+		this.restriction = restriction;
 		return this;
 	}
 
