@@ -15,6 +15,18 @@ const defaultSlashCommandExecute: SlashCommandExecute = async (i, _ctx) => {
 
 export type SlashCommandAutocomplete = (i: AutocompleteInteraction) => unknown | Promise<unknown>;
 
+export enum CommandServerRestriction {
+	// Catch-All
+	All = 'all',
+	None = 'none',
+
+	// Specific Servers
+	DiscordMafia = 'discordmafia',
+	PlayerChat = 'playerchat',
+
+	// Public Use
+	Org = 'org', // Example
+}
 export class SlashCommand extends Interaction {
 	public static slashCommands = new Map<string, SlashCommand>();
 	private builder: SlashCommandBuilder;
