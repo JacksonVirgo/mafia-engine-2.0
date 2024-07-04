@@ -23,7 +23,7 @@ export async function createAnonymousGroup(channelId: string) {
 		})
 		.catch(null);
 
-	return !!group;
+	return group;
 }
 
 export type AnonymousGroup = NonNullable<Awaited<ReturnType<typeof getAnonymousGroup>>>;

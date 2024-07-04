@@ -2,7 +2,7 @@ import { ChannelType } from 'discord.js';
 import { anonymousGroupExistsInChannel, createAnonymousGroup } from '../../../models/anonymity';
 import { CustomButtonBuilder } from '../../../structures/interactions/Button';
 import { InteractionError } from '../../../structures/interactions/_Interaction';
-import { embedCreateAnonymousGroup } from '../../../views/anonymity';
+import { anonEmbedMainPage } from '../../../views/anonymity';
 
 export default new CustomButtonBuilder('manage-anonymity-create')
 	.onGenerate((builder) => builder.setLabel('Create Anonymous Group'))
@@ -19,6 +19,6 @@ export default new CustomButtonBuilder('manage-anonymity-create')
 		const createdGroup = await createAnonymousGroup(currentChannelId);
 		if (!createdGroup) throw new InteractionError('Failed to create the anonymous group');
 
-		const payload = embedCreateAnonymousGroup();
+		const payload = await anonEmbedMainPage(createdGroup);
 		return await i.update(payload);
 	});

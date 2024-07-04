@@ -1,31 +1,27 @@
 export function convertDiscordTimestamp(discordTimestamp: number): string {
 	const date = new Date(discordTimestamp * 1000);
+	const options: Intl.DateTimeFormatOptions = {
+		hour: 'numeric',
+		minute: 'numeric',
+		hour12: true,
+		timeZone: 'UTC',
+		timeZoneName: 'short',
+	};
 
-	const utcHours = date.getUTCHours();
-	const minutes = date.getUTCMinutes();
-	const month = date.getUTCMonth() + 1;
-	const day = date.getUTCDate();
-	const year = date.getUTCFullYear();
-	const isDST = isDaylightSavingTime(new Date(year, month - 1, day));
-	const estOffset = isDST ? -4 : -5;
-	const estHours = (utcHours + estOffset + 24) % 24;
-	const hours12 = estHours % 12 || 12; // Convert 0 -> 12 for 12 AM
-	const period = estHours >= 12 ? 'PM' : 'AM';
-	const formattedMinutes = minutes.toString().padStart(2, '0');
-	return `${hours12}:${formattedMinutes} ${period} EST`;
-}
+	const formattedTime = date.toLocaleString('en-US', options);
 
-function isDaylightSavingTime(date: Date): boolean {
-	// Last Sunday in March to last Sunday in October
-	const startDST = new Date(date.getUTCFullYear(), 2, getLastSunday(2, date.getUTCFullYear()));
-	const endDST = new Date(date.getUTCFullYear(), 9, getLastSunday(9, date.getUTCFullYear()));
+	const dayAgo = 1000 * 60 * 60 * 24;
+	const dayInFuture = Date.now() + dayAgo;
 
-	return date >= startDST && date < endDST;
-}
+	if (date.getTime() > dayInFuture) {
+		const dateOptions: Intl.DateTimeFormatOptions = {
+			month: '2-digit',
+			day: '2-digit',
+			timeZone: 'UTC',
+		};
+		const formattedDate = date.toLocaleDateString('en-US', dateOptions);
+		return `${formattedTime} on ${formattedDate}`;
+	}
 
-// Helper function to find the last Sunday of a given month in a given year
-function getLastSunday(month: number, year: number): number {
-	const lastDay = new Date(Date.UTC(year, month + 1, 0)); // Last day of the month
-	const dayOfWeek = lastDay.getUTCDay();
-	return lastDay.getUTCDate() - dayOfWeek;
+	return formattedTime;
 }

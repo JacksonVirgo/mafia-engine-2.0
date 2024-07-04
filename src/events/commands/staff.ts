@@ -13,6 +13,7 @@ const CommunityContributorRoles: string[] = [
 	'903394030904299541', // Technician
 	'1134180413288501398', // Archivist
 	'1163201195519787029', // Game Balancer
+	'1006986517937406093', // Event Organizer
 	'1174433972718157924', // Wiki Editor
 ];
 
